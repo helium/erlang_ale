@@ -138,7 +138,7 @@ static void i2c_handle_request(const char *req, void *cookie)
         long int len;
         if (ei_decode_long(req, &req_index, &len) < 0 ||
                 len < 1 ||
-                len > i2c->max_block_size)
+                abs(len) > i2c->max_block_size)
             errx(EXIT_FAILURE, "read amount: min=1, max=%d", i2c->max_block_size);
 
         char data[i2c->max_block_size];
@@ -189,7 +189,7 @@ static void i2c_handle_request(const char *req, void *cookie)
             errx(EXIT_FAILURE, "wrrd: need a binary between 1 and %d bytes", i2c->max_block_size);
         if (ei_decode_long(req, &req_index, &read_len) < 0 ||
                 read_len < 1 ||
-                read_len > i2c->max_block_size)
+                abs(read_len) > i2c->max_block_size)
             errx(EXIT_FAILURE, "wrrd: read amount: min=1, max=%d", i2c->max_block_size);
 
         if (i2c_transfer(i2c, write_data, write_len, read_data, read_len))
